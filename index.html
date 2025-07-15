@@ -136,17 +136,16 @@
 
   <!-- Chatbot Window (hidden by default) -->
   <div id="chatbot-window" class="fixed bottom-24 right-6 md:right-8 w-80 max-w-full rounded-2xl shadow-2xl border border-gray-200"
-    style="backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%); background-color: rgba(255, 255, 255, 0.75);">
+    style="backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%); background-color: rgba(255, 255, 255, 0.75); display: none;">
     <div class="flex items-center justify-between px-4 py-3 bg-indigo-600 rounded-t-2xl">
       <span class="text-white font-medium">Nova</span>
       <button aria-label="Close chatbot" class="text-white cursor-default" disabled>&times;</button>
     </div>
     <div class="p-4 h-64 overflow-y-auto space-y-2 text-sm text-gray-700">
       <div class="text-right">
-        <span class="inline-block bg-indigo-600 text-white rounded-lg px-3 py-1"> Hi, I am Nova, your friendly AI assistant here to help you navigate Echelon safely and confidently!</span>
-      </div>
-      <div>
-        <span class="inline-block bg-gray-200 rounded-lg px-3 py-1">Ask me anything!</span>
+        <span class="inline-block bg-indigo-600 text-white rounded-lg px-3 py-1">
+          Hi, I am Nova, your friendly AI assistant here to help you navigate Echelon safely and confidently!
+        </span>
       </div>
     </div>
     <form class="flex border-t border-gray-200" onsubmit="return false;">
