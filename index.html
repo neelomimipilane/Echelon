@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Echelon – Cyber‑Safe Browsing</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f9fafb;
+      color: #1f2937;
+    }
+    /* Floating Chatbot Button Styles */
+    #chatbot-toggle {
+      background: linear-gradient(135deg, #6e40ff 0%, #2d9cdb 100%);
+    }
+    /* Chatbot Window Background */
+    #chatbot-window {
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      background-color: rgba(255, 255, 255, 0.75);
+    }
+  </style>
+</head>
+<body class="antialiased">
+
+  <!-- Header -->
+  <header class="bg-white shadow-sm sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <h1 class="text-2xl font-bold text-indigo-600">Echelon</h1>
+      <nav class="space-x-6 hidden md:block">
+        <a href="#features" class="text-gray-600 hover:text-indigo-600">Features</a>
+        <a href="#tutorial" class="text-gray-600 hover:text-indigo-600">Tutorial</a>
+        <a href="#volunteer" class="text-gray-600 hover:text-indigo-600">Volunteer</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="bg-indigo-50 py-20">
+    <div class="max-w-5xl mx-auto px-6 text-center">
+      <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
+        Browse smarter. <span class="text-indigo-600">Stay safer.</span>
+      </h2>
+      <p class="mt-6 text-lg text-gray-700">
+        Echelon protects you from spam, misleading and fraudulent content across the web while
+        highlighting trusted sources tailored to your search.
+      </p>
+      <div class="mt-8 space-x-4">
+        <a href="#tutorial" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-xl font-medium shadow hover:bg-indigo-700 transition">
+          Get the Extension
+        </a>
+        <a href="#features" class="inline-block text-indigo-600 font-medium hover:underline">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="py-24 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <h3 class="text-3xl font-bold text-gray-900 text-center mb-12">Key Features</h3>
+      <div class="grid gap-12 md:grid-cols-2 lg:grid-cols-3">
+        <div class="bg-indigo-50 p-6 rounded-2xl shadow-sm">
+          <h4 class="text-xl font-semibold mb-2">Real‑Time Detection</h4>
+          <p class="text-gray-700">Get instant alerts when spam, fraud or misleading content appears on any page.</p>
+        </div>
+        <div class="bg-indigo-50 p-6 rounded-2xl shadow-sm">
+          <h4 class="text-xl font-semibold mb-2">Leave Out Capability</h4>
+          <p class="text-gray-700">Automatically crops or masks fraudulent sections so you focus only on what matters.</p>
+        </div>
+        <div class="bg-indigo-50 p-6 rounded-2xl shadow-sm">
+          <h4 class="text-xl font-semibold mb-2">Trusted Highlighting</h4>
+          <p class="text-gray-700">Surface information from verified sources matching your exact query.</p>
+        </div>
+        <div class="bg-indigo-50 p-6 rounded-2xl shadow-sm">
+          <h4 class="text-xl font-semibold mb-2">Cross‑Browser Support</h4>
+          <p class="text-gray-700">Install on Chrome, Brave, Opera, Edge, Firefox and more with a single codebase.</p>
+        </div>
+        <div class="bg-indigo-50 p-6 rounded-2xl shadow-sm">
+          <h4 class="text-xl font-semibold mb-2">Customizable Themes</h4>
+          <p class="text-gray-700">Choose your colour scheme while staying WCAG‑compliant for contrast.</p>
+        </div>
+        <div class="bg-indigo-50 p-6 rounded-2xl shadow-sm">
+          <h4 class="text-xl font-semibold mb-2">In‑App Chatbot</h4>
+          <p class="text-gray-700">Quick guidance and security tips without leaving the page.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tutorial -->
+  <section id="tutorial" class="py-24 bg-indigo-50">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h3 class="text-3xl font-bold text-gray-900 mb-4">Install & Integrate</h3>
+      <p class="text-gray-700 mb-8">
+        Watch the step‑by‑step video or follow written instructions to get Echelon running in under two minutes.
+      </p>
+      <a href="#" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-xl font-medium shadow hover:bg-indigo-700 transition">
+        Watch Tutorial Video
+      </a>
+    </div>
+  </section>
+
+  <!-- Volunteer -->
+  <section id="volunteer" class="py-24 bg-white">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <h3 class="text-3xl font-bold text-gray-900 mb-4">Journalists & Fact‑Checkers, Join Us</h3>
+      <p class="text-gray-700 mb-8">
+        Help strengthen the web by adding reliable sources and validating content. Create a volunteer account to contribute.
+      </p>
+      <a href="#" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-xl font-medium shadow hover:bg-indigo-700 transition">
+        Volunteer Login
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-50 py-8 text-center text-sm text-gray-500">
+    © 2025 Echelon. All rights reserved.
+  </footer>
+
+  <!-- Floating Chatbot Button -->
+  <button id="chatbot-toggle" aria-label="Chatbot" class="fixed bottom-6 right-6 md:bottom-8 md:right-8 w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-white focus:outline-none focus:ring-4 focus:ring-indigo-300"
+    style="background: linear-gradient(135deg, #6e40ff 0%, #2d9cdb 100%);">
+    <!-- Chat icon -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h6m2 8h-5l-4 4v-4H5a2 2 0 01-2-2V4a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2h-3z" />
+    </svg>
+  </button>
+
+  <!-- Chatbot Window (visible but static) -->
+  <div id="chatbot-window" class="fixed bottom-24 right-6 md:right-8 w-80 max-w-full rounded-2xl shadow-2xl border border-gray-200"
+    style="backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%); background-color: rgba(255, 255, 255, 0.75);">
+    <div class="flex items-center justify-between px-4 py-3 bg-indigo-600 rounded-t-2xl">
+      <span class="text-white font-medium">Echelon Assistant</span>
+      <button aria-label="Close chatbot" class="text-white cursor-default" disabled>&times;</button>
+    </div>
+    <div class="p-4 h-64 overflow-y-auto space-y-2 text-sm text-gray-700">
+      <div class="text-right">
+        <span class="inline-block bg-indigo-600 text-white rounded-lg px-3 py-1">Hi! I’m here to help you navigate Echelon.</span>
+      </div>
+      <div>
+        <span class="inline-block bg-gray-200 rounded-lg px-3 py-1">Ask me anything!</span>
+      </div>
+    </div>
+    <form class="flex border-t border-gray-200" onsubmit="return false;">
+      <input type="text" placeholder="Ask me anything…" class="flex-grow px-3 py-2 rounded-bl-2xl focus:outline-none" disabled />
+      <button type="submit" class="px-4 font-semibold text-indigo-600" disabled>Send</button>
+    </form>
+  </div>
+
+</body>
+</html>
