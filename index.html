@@ -23,6 +23,8 @@
       backdrop-filter: blur(16px) saturate(180%);
       -webkit-backdrop-filter: blur(16px) saturate(180%);
       background-color: rgba(255, 255, 255, 0.75);
+      /* Start hidden */
+      display: none;
     }
   </style>
 </head>
@@ -132,11 +134,11 @@
     </svg>
   </button>
 
-  <!-- Chatbot Window (visible but static) -->
+  <!-- Chatbot Window (hidden by default) -->
   <div id="chatbot-window" class="fixed bottom-24 right-6 md:right-8 w-80 max-w-full rounded-2xl shadow-2xl border border-gray-200"
     style="backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%); background-color: rgba(255, 255, 255, 0.75);">
     <div class="flex items-center justify-between px-4 py-3 bg-indigo-600 rounded-t-2xl">
-      <span class="text-white font-medium">Echelon Assistant</span>
+      <span class="text-white font-medium">Nova</span>
       <button aria-label="Close chatbot" class="text-white cursor-default" disabled>&times;</button>
     </div>
     <div class="p-4 h-64 overflow-y-auto space-y-2 text-sm text-gray-700">
@@ -152,6 +154,19 @@
       <button type="submit" class="px-4 font-semibold text-indigo-600" disabled>Send</button>
     </form>
   </div>
+
+  <script>
+    const toggleBtn = document.getElementById('chatbot-toggle');
+    const chatbotWindow = document.getElementById('chatbot-window');
+
+    toggleBtn.addEventListener('click', () => {
+      if (chatbotWindow.style.display === 'none' || chatbotWindow.style.display === '') {
+        chatbotWindow.style.display = 'block';
+      } else {
+        chatbotWindow.style.display = 'none';
+      }
+    });
+  </script>
 
 </body>
 </html>
