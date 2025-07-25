@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Echelon</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <img src="icons/icon.png" alt="Echelon" class="header-icon">
+      <h1>Echelon</h1>
+    </div>
+    <div class="status-indicator" id="statusIndicator">
+      <div class="status-dot"></div>
+      <span id="statusText">Ready</span>
+    </div>
+  </div>
+  
+  <div class="scan-section">
+    <button id="scanBtn" class="scan-button">
+      <span class="button-text"> Deep Scan Page</span>
+      <div class="scan-animation"></div>
+    </button>
+    
+    <div class="last-scan" id="lastScan">
+      <small>Click to scan current page</small>
+    </div>
+  </div>
+  
+  <div class="features">
+    <div class="feature-item">
+      <span class="feature-icon"></span>
+      <span>Real-time protection</span>
+    </div>
+    <div class="feature-item">
+      <span class="feature-icon"></span>
+      <span>Advanced threat detection</span>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

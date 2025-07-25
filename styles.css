@@ -1,0 +1,141 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  inline-size: 320px;
+  padding: 0;
+  margin: 0;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  color: #333;
+}
+
+.header {
+  background: linear-gradient(135deg, #0057b7, #e07c11);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.header-icon {
+  width: 32px;
+  height: 32px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.status-dot {
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: 50%;
+  background: #00ff88;
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.2); }
+}
+
+.scan-section {
+  padding: 20px;
+}
+
+.scan-button {
+  inline-size: 100%;
+  background: linear-gradient(135deg, #0057b7, #003e91);
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.scan-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,87,183,0.3);
+}
+
+.scan-button:active {
+  transform: translateY(0);
+}
+
+.scan-button.scanning {
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  animation: scanning-pulse 1.5s infinite;
+}
+
+.scan-animation {
+  position: absolute;
+  inset-inline-start: -100%;
+  inline-size: 100%;
+  block-size: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.6s ease;
+}
+
+.scan-button.scanning .scan-animation {
+  animation: scan-sweep 1.5s infinite;
+}
+
+@keyframes scanning-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,107,53,0.7); }
+  50% { box-shadow: 0 0 0 10px rgba(255,107,53,0); }
+}
+
+@keyframes scan-sweep {
+  0% { inset-inline-start: -100%; }
+  100% { inset-inline-start: 100%; }
+}
+
+.last-scan {
+  text-align: center;
+  margin-block-start: 12px;
+  font-size: 12px;
+  color: #666;
+}
+
+.features {
+  padding: 0 20px 20px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.feature-icon {
+  font-size: 16px;
+}
+
+.risk-high { background: linear-gradient(135deg, #ff4444, #cc0000) !important; }
+.risk-medium { background: linear-gradient(135deg, #ff8800, #e67300) !important; }
+.risk-low { background: linear-gradient(135deg, #ffaa00, #cc8800) !important; }
+.risk-safe { background: linear-gradient(135deg, #00ff88, #00cc66) !important; }
