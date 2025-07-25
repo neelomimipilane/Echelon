@@ -53,6 +53,24 @@
       cursor: pointer;
     }
 
+    .scan-result {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .safe {
+      color: green;
+    }
+
+    .suspicious {
+      color: orange;
+    }
+
+    .dangerous {
+      color: red;
+    }
+
     nav {
       display: flex;
       justify-content: center;
@@ -136,8 +154,9 @@
   </header>
 
   <div class="search-bar">
-    <input type="text" placeholder="Enter URL to scan...">
-    <button>Scan</button>
+    <input type="text" placeholder="Enter URL to scan..." id="scan-input">
+    <button id="scan-button">Scan</button>
+    <div class="scan-result" id="scan-result"></div>
   </div>
 
   <nav>
@@ -205,9 +224,9 @@
       slides[current].classList.remove('active');
       current = (current + 1) % slides.length;
       slides[current].classList.add('active');
-    }, 3000); // Change image every 3 seconds
+    }, 3000);
 
-    // URL Scanner Logic
+    // URL Validator
     function isValidUrl(url) {
       try {
         new URL(url);
@@ -217,6 +236,7 @@
       }
     }
 
+    // URL Scanner
     function scanUrl(url) {
       const suspiciousPatterns = ["free-money", "click-here", "login-now", "phish", "win-big", "bit.ly"];
       let risk = "Safe";
@@ -234,17 +254,25 @@
       return risk;
     }
 
-    document.querySelector('.search-bar button').addEventListener('click', () => {
-      const input = document.querySelector('.search-bar input');
-      const url = input.value.trim();
+    // Scan Button Logic
+    document.getElementById('scan-button').addEventListener('click', () => {
+      const urlInput = document.getElementById('scan-input').value.trim();
+      const resultDiv = document.getElementById('scan-result');
 
-      if (!isValidUrl(url)) {
-        alert("Please enter a valid URL.");
+      if (!isValidUrl(urlInput)) {
+        resultDiv.innerHTML = `<span class="dangerous">❌ Invalid URL. Please try again.</span>`;
         return;
       }
 
-      const result = scanUrl(url);
-      alert(`Scan Result: ${result}`);
+      const result = scanUrl(urlInput);
+
+      if (result === "Safe") {
+        resultDiv.innerHTML = `<span class="safe"> Safe: No threats detected.</span>`;
+      } else if (result === "Suspicious") {
+        resultDiv.innerHTML = `<span class="suspicious"> Suspicious: Be cautious with this link.</span>`;
+      } else {
+        resultDiv.innerHTML = `<span class="dangerous"> Dangerous: Scam or phishing detected!</span>`;
+      }
     });
   </script>
 
