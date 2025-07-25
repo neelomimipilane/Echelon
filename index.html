@@ -206,6 +206,46 @@
       current = (current + 1) % slides.length;
       slides[current].classList.add('active');
     }, 3000); // Change image every 3 seconds
+
+    // URL Scanner Logic
+    function isValidUrl(url) {
+      try {
+        new URL(url);
+        return true;
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function scanUrl(url) {
+      const suspiciousPatterns = ["free-money", "click-here", "login-now", "phish", "win-big", "bit.ly"];
+      let risk = "Safe";
+
+      for (let pattern of suspiciousPatterns) {
+        if (url.toLowerCase().includes(pattern)) {
+          risk = "Suspicious";
+          if (url.toLowerCase().includes("login") || url.toLowerCase().includes("bit.ly")) {
+            risk = "Dangerous";
+          }
+          break;
+        }
+      }
+
+      return risk;
+    }
+
+    document.querySelector('.search-bar button').addEventListener('click', () => {
+      const input = document.querySelector('.search-bar input');
+      const url = input.value.trim();
+
+      if (!isValidUrl(url)) {
+        alert("Please enter a valid URL.");
+        return;
+      }
+
+      const result = scanUrl(url);
+      alert(`Scan Result: ${result}`);
+    });
   </script>
 
 </body>
