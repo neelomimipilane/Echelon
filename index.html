@@ -264,9 +264,9 @@
 
   <section id="history" class="tab-content">
     <h2>Scan History</h2>
-    <p>✅ <strong>Scanned Links:</strong></p>
+    <p><strong>Scanned Links:</strong></p>
     <ul id="historyList"></ul>
-    <p>🚫 <strong>Quarantined Suspicious Links:</strong></p>
+    <p><strong>Quarantined Suspicious Links:</strong></p>
     <ul id="quarantineList"></ul>
   </section>
 
@@ -324,13 +324,13 @@
 
     // Scan logic (mock)
     function scanUrl(url) {
-      const suspiciousPatterns = ["free-money", "click-here", "login", "bit.ly", "win-big", "phish"];
+      const suspiciousPatterns = ["free-money", "click-here", "login", "bit.ly", "win-big", "phish", "win money", "congratulations", "you won", "send details", "send money"];
       let risk = "Safe";
 
       for (let pattern of suspiciousPatterns) {
         if (url.toLowerCase().includes(pattern)) {
           risk = "Suspicious";
-          if (url.includes("login") || url.includes("bit.ly")) {
+          if (url.includes("login") || url.includes("bit.ly") || url.includes("send money") url.includes("free money")) {
             risk = "Dangerous";
           }
           break;
