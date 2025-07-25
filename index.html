@@ -53,24 +53,6 @@
       cursor: pointer;
     }
 
-    .scan-result {
-      margin-top: 15px;
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    .safe {
-      color: green;
-    }
-
-    .suspicious {
-      color: orange;
-    }
-
-    .dangerous {
-      color: red;
-    }
-
     nav {
       display: flex;
       justify-content: center;
@@ -138,24 +120,23 @@
       color: #4b0082;
     }
 
-    .tab-content p {
+    .tab-content p, .tab-content ul {
       max-width: 800px;
       margin: auto;
       font-size: 18px;
       line-height: 1.6;
     }
 
-    #scan-log {
-      margin-top: 20px;
-      text-align: left;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
+    .result-safe {
+      color: green;
     }
 
-    #scan-log div {
-      padding: 8px;
-      border-bottom: 1px solid #ccc;
+    .result-suspicious {
+      color: orange;
+    }
+
+    .result-dangerous {
+      color: red;
     }
   </style>
 </head>
@@ -167,15 +148,14 @@
   </header>
 
   <div class="search-bar">
-    <input type="text" placeholder="Enter URL to scan..." id="scan-input">
-    <button id="scan-button">Scan</button>
-    <div class="scan-result" id="scan-result"></div>
+    <input type="text" id="urlInput" placeholder="Enter URL to scan...">
+    <button id="scanBtn">Scan</button>
   </div>
 
   <nav>
     <a href="#" onclick="showTab('about')"><i class="fas fa-info-circle"></i> About</a>
     <a href="#" onclick="showTab('sources')"><i class="fas fa-shield-alt"></i> Sources</a>
-    <a href="#" onclick="showTab('scanned'); loadScanned()"><i class="fas fa-search"></i> Scanned</a>
+    <a href="#" onclick="showTab('scanned')"><i class="fas fa-search"></i> Scanned</a>
     <a href="#" onclick="showTab('history')"><i class="fas fa-history"></i> History</a>
     <a href="#" onclick="showTab('report')"><i class="fas fa-flag"></i> Report</a>
     <a href="#" onclick="showTab('settings')"><i class="fas fa-cog"></i> Settings</a>
@@ -203,9 +183,7 @@
 
   <section id="scanned" class="tab-content">
     <h2>Scanned Links</h2>
-    <div id="scan-log">
-      <!-- Dynamic scanned links will appear here -->
-    </div>
+    <ul id="scannedList"></ul>
   </section>
 
   <section id="history" class="tab-content">
@@ -224,7 +202,7 @@
   </section>
 
   <script>
-    // Show tabs
+    // Tab switcher
     function showTab(tabId) {
       const tabs = document.querySelectorAll('.tab-content');
       tabs.forEach(tab => tab.classList.remove('active-tab'));
@@ -241,7 +219,7 @@
       slides[current].classList.add('active');
     }, 3000);
 
-    // Validate URL
+    // Scan Logic
     function isValidUrl(url) {
       try {
         new URL(url);
@@ -251,15 +229,14 @@
       }
     }
 
-    // Scan logic
     function scanUrl(url) {
-      const suspiciousPatterns = ["free-money", "click-here", "login-now", "phish", "win-big", "bit.ly"];
+      const suspiciousPatterns = ["free-money", "click-here", "login", "bit.ly", "win-big", "phish"];
       let risk = "Safe";
 
       for (let pattern of suspiciousPatterns) {
         if (url.toLowerCase().includes(pattern)) {
           risk = "Suspicious";
-          if (url.toLowerCase().includes("login") || url.toLowerCase().includes("bit.ly")) {
+          if (url.includes("login") || url.includes("bit.ly")) {
             risk = "Dangerous";
           }
           break;
@@ -269,57 +246,25 @@
       return risk;
     }
 
-    // Save to local storage
-    function saveToHistory(url, result) {
-      const history = JSON.parse(localStorage.getItem("scanHistory") || "[]");
-      history.unshift({ url, result, time: new Date().toLocaleString() });
-      localStorage.setItem("scanHistory", JSON.stringify(history));
-    }
+    const scannedList = document.getElementById('scannedList');
 
-    // Load scanned URLs to tab
-    function loadScanned() {
-      const scanLog = document.getElementById("scan-log");
-      scanLog.innerHTML = "";
-
-      const history = JSON.parse(localStorage.getItem("scanHistory") || "[]");
-
-      if (history.length === 0) {
-        scanLog.innerHTML = "<p>No scans yet.</p>";
-        return;
-      }
-
-      history.forEach(entry => {
-        let className = "safe";
-        if (entry.result === "Suspicious") className = "suspicious";
-        if (entry.result === "Dangerous") className = "dangerous";
-
-        scanLog.innerHTML += `
-          <div><strong>${entry.url}</strong> – <span class="${className}">${entry.result}</span> <br><small>${entry.time}</small></div>
-        `;
-      });
-    }
-
-    // Scan button logic
-    document.getElementById("scan-button").addEventListener("click", () => {
-      const url = document.getElementById("scan-input").value.trim();
-      const resultDiv = document.getElementById("scan-result");
+    document.getElementById('scanBtn').addEventListener('click', () => {
+      const input = document.getElementById('urlInput');
+      const url = input.value.trim();
 
       if (!isValidUrl(url)) {
-        resultDiv.innerHTML = `<span class="dangerous"> Invalid URL. Please try again.</span>`;
+        alert("Please enter a valid URL.");
         return;
       }
 
       const result = scanUrl(url);
+      alert(`Scan Result: ${result}`);
 
-      if (result === "Safe") {
-        resultDiv.innerHTML = `<span class="safe"> Safe: No threats detected.</span>`;
-      } else if (result === "Suspicious") {
-        resultDiv.innerHTML = `<span class="suspicious">  Suspicious: Be cautious with this link.</span>`;
-      } else {
-        resultDiv.innerHTML = `<span class="dangerous">  Dangerous: Scam or phishing detected!</span>`;
-      }
+      const li = document.createElement('li');
+      li.innerHTML = `🔗 ${url} → <span class="result-${result.toLowerCase()}">${result}</span>`;
+      scannedList.appendChild(li);
 
-      saveToHistory(url, result);
+      input.value = "";
     });
   </script>
 
