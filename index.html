@@ -2,215 +2,69 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Echelon - Cyber Safety Tool</title>
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Echelon – Cyber‑Safe Browsing</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
     body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f8f8ff;
-      color: #333;
+      font-family: 'Inter', sans-serif;
+      background-color: #f9fafb;
+      color: #1f2937;
     }
-
-    header {
-      background-color: #4b0082;
-      color: white;
-      padding: 30px 20px;
-      text-align: center;
+    /* Floating Chatbot Button Styles */
+    #chatbot-toggle {
+      background: linear-gradient(135deg, #6e40ff 0%, #2d9cdb 100%);
     }
-
-    header h1 {
-      margin: 0;
-      font-size: 36px;
-    }
-
-    header p {
-      margin-top: 10px;
-      font-size: 16px;
-    }
-
-    .search-bar {
-      text-align: center;
-      margin: 20px;
-    }
-
-    .search-bar input {
-      width: 60%;
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
-
-    .search-bar button {
-      padding: 10px 20px;
-      margin-left: 10px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    nav {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      background-color: #007bff;
-    }
-
-    nav button {
-      background: none;
-      border: none;
-      color: white;
-      padding: 14px 20px;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      transition: background-color 0.3s;
-    }
-
-    nav button i {
-      margin-right: 8px;
-    }
-
-    nav button:hover {
-      background-color: #4b0082;
-    }
-
-    nav button.active-tab-button {
-      background-color: #4b0082;
-    }
-
-    .slider {
-      max-width: 800px;
-      margin: 30px auto;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    .slider img {
-      width: 100%;
-      height: 300px;
-      object-fit: cover;
+    /* Chatbot Window Background */
+    #chatbot-window {
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      background-color: rgba(255, 255, 255, 0.75);
+      /* Start hidden */
       display: none;
-    }
-
-    .slider img.active {
-      display: block;
-    }
-
-    section {
-      padding: 40px 20px;
-      text-align: center;
-    }
-
-    .tab-content {
-      display: none;
-    }
-
-    .active-tab {
-      display: block;
-      animation: fade 0.4s ease-in-out;
-    }
-
-    @keyframes fade {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-
-    .tab-content h2 {
-      color: #4b0082;
-    }
-
-    .tab-content p, .tab-content ul {
-      max-width: 800px;
-      margin: auto;
-      font-size: 18px;
-      line-height: 1.6;
-    }
-
-    .result-safe {
-      color: green;
-    }
-
-    .result-suspicious {
-      color: orange;
-    }
-
-    .result-dangerous {
-      color: red;
-    }
-
-    /* Dark mode styles */
-    body.dark-mode {
-      background-color: #121212;
-      color: #e0e0e0;
-    }
-
-    body.dark-mode header {
-      background-color: #2c0052;
-      color: #f0e9ff;
-    }
-
-    body.dark-mode nav {
-      background-color: #2c0052;
-    }
-
-    body.dark-mode nav button {
-      color: #ddd;
-    }
-
-    body.dark-mode nav button:hover,
-    body.dark-mode nav button.active-tab-button {
-      background-color: #4b0082;
-      color: #fff;
-    }
-
-    body.dark-mode .search-bar input {
-      background-color: #333;
-      border: 1px solid #555;
-      color: #eee;
-    }
-
-    body.dark-mode .search-bar button {
-      background-color: #6200ea;
-      color: white;
-    }
-
-    body.dark-mode .slider img {
-      filter: brightness(0.8);
-    }
-
-    body.dark-mode section {
-      background-color: #1a1a1a;
-      color: #ddd;
-    }
-
-    body.dark-mode .result-safe {
-      color: #4caf50;
-    }
-
-    body.dark-mode .result-suspicious {
-      color: #ffa000;
-    }
-
-    body.dark-mode .result-dangerous {
-      color: #f44336;
     }
   </style>
 </head>
-<body>
+<body class="antialiased">
+  
 
-  <header>
-    <h1>Echelon</h1>
-    <p>Your smart browser extension for scam detection and digital awareness</p>
+  <!-- Header -->
+  <header class="bg-white shadow-sm sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <!-- Logo -->
+         <a class="navbar-brand" href="web page.html">
+        <img src="icons/icon.png" alt="Echelon Logo" width="50" />
+        <span class="text-2xl font-bold text-indigo-600">Echelon</span>
+      </a>
+      <!-- Navigation -->
+      <nav class="space-x-6 hidden md:block">
+        <a href="#features" class="text-gray-600 hover:text-indigo-600">Features</a>
+        <a href="#tutorial" class="text-gray-600 hover:text-indigo-600">Tutorial</a>
+        <a href="#volunteer" class="text-gray-600 hover:text-indigo-600">Volunteer</a>
+      </nav>
+    </div>
   </header>
 
+  <!-- Hero -->
+  <section class="bg-indigo-50 py-20">
+    <div class="max-w-5xl mx-auto px-6 text-center">
+      <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
+        Browse smarter. <span class="text-indigo-600">Stay safer.</span>
+      </h2>
+      <p class="mt-6 text-lg text-gray-700">
+        Echelon protects you from spam, misleading and fraudulent content across the web while
+        highlighting trusted sources tailored to your search.
+      </p>
+      <div class="mt-8 space-x-4">
+        <a href="#tutorial" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-xl font-medium shadow hover:bg-indigo-700 transition">
+          Get the Extension
+        </a>
+        <a href="#features" class="inline-block text-indigo-600 font-medium hover:underline">Learn More</a>
+      </div>
+    </div>
   <div class="search-bar">
     <input type="text" id="urlInput" placeholder="Enter URL to scan..." />
     <button id="scanBtn">Scan</button>
@@ -252,148 +106,111 @@
     </p>
   </section>
 
-  <section id="sources" class="tab-content">
-    <h2>Trusted Sources</h2>
-    <p>We cross-check information with verified platforms and databases to ensure you get credible, fraud-free content.</p>
+  <!-- Features -->
+  <section id="features" class="py-24 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <h3 class="text-3xl font-bold text-gray-900 text-center mb-12">Key Features</h3>
+      <div class="grid gap-12 md:grid-cols-2 lg:grid-cols-3">
+        <div class="bg-indigo-50 p-6 rounded-2xl shadow-sm">
+          <h4 class="text-xl font-semibold mb-2">Real‑Time Detection</h4>
+          <p class="text-gray-700">Get instant alerts when spam, fraud or misleading content appears on any page.</p>
+        </div>
+        <div class="bg-indigo-50 p-6 rounded-2xl shadow-sm">
+          <h4 class="text-xl font-semibold mb-2">Leave Out Capability</h4>
+          <p class="text-gray-700">Automatically crops or masks fraudulent sections so you focus only on what matters.</p>
+        </div>
+        <div class="bg-indigo-50 p-6 rounded-2xl shadow-sm">
+          <h4 class="text-xl font-semibold mb-2">Trusted Highlighting</h4>
+          <p class="text-gray-700">Surface information from verified sources matching your exact query.</p>
+        </div>
+        <div class="bg-indigo-50 p-6 rounded-2xl shadow-sm">
+          <h4 class="text-xl font-semibold mb-2">Cross‑Browser Support</h4>
+          <p class="text-gray-700">Install on Chrome, Brave, Opera, Edge, Firefox and more with a single codebase.</p>
+        </div>
+        <div class="bg-indigo-50 p-6 rounded-2xl shadow-sm">
+          <h4 class="text-xl font-semibold mb-2">Customizable Themes</h4>
+          <p class="text-gray-700">Choose your colour scheme while staying WCAG‑compliant for contrast.</p>
+        </div>
+        <div class="bg-indigo-50 p-6 rounded-2xl shadow-sm">
+          <h4 class="text-xl font-semibold mb-2">In‑App Chatbot</h4>
+          <p class="text-gray-700">Quick guidance and security tips without leaving the page.</p>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <section id="scanned" class="tab-content">
-    <h2>Scanned Links</h2>
-    <ul id="scannedList"></ul>
+  <!-- Tutorial -->
+  <section id="tutorial" class="py-24 bg-indigo-50">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h3 class="text-3xl font-bold text-gray-900 mb-4">Install & Integrate</h3>
+      <p class="text-gray-700 mb-8">
+        Watch the step‑by‑step video or follow written instructions to get Echelon running in under two minutes.
+      </p>
+      <a href="#" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-xl font-medium shadow hover:bg-indigo-700 transition">
+        Watch Tutorial Video
+      </a>
+    </div>
   </section>
 
-  <section id="history" class="tab-content">
-    <h2>Scan History</h2>
-    <p><strong>Scanned Links:</strong></p>
-    <ul id="historyList"></ul>
-    <p><strong>Quarantined Suspicious Links:</strong></p>
-    <ul id="quarantineList"></ul>
+  <!-- Volunteer -->
+  <section id="volunteer" class="py-24 bg-white">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <h3 class="text-3xl font-bold text-gray-900 mb-4">Journalists & Fact‑Checkers, Join Us</h3>
+      <p class="text-gray-700 mb-8">
+        Help strengthen the web by adding reliable sources and validating content. Create a volunteer account to contribute.
+      </p>
+      <a href="#" class="inline-block bg-indigo-600 text-white px-6 py-3 rounded-xl font-medium shadow hover:bg-indigo-700 transition">
+        Volunteer Login
+      </a>
+    </div>
   </section>
 
-  <section id="report" class="tab-content">
-    <h2>Report a Scam</h2>
-    <p>Submit any suspicious content you've encountered to help improve Echelon and protect others.</p>
-  </section>
+  <!-- Footer -->
+  <footer class="bg-gray-50 py-8 text-center text-sm text-gray-500">
+    © 2025 Echelon. All rights reserved.
+  </footer>
 
-  <section id="settings" class="tab-content">
-    <h2>Settings</h2>
-    <p>
-      Toggle between Light and Dark mode for better accessibility:
-    </p>
-    <label for="darkModeToggle" style="cursor:pointer; font-size:18px;">
-      <input type="checkbox" id="darkModeToggle" /> Enable Dark Mode
-    </label>
-  </section>
+  <!-- Floating Chatbot Button -->
+  <button id="chatbot-toggle" aria-label="Chatbot" class="fixed bottom-6 right-6 md:bottom-8 md:right-8 w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-white focus:outline-none focus:ring-4 focus:ring-indigo-300"
+    style="background: linear-gradient(135deg, #6e40ff 0%, #2d9cdb 100%);">
+    <!-- Chat icon -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h6m2 8h-5l-4 4v-4H5a2 2 0 01-2-2V4a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2h-3z" />
+    </svg>
+  </button>
+
+  <!-- Chatbot Window (hidden by default) -->
+  <div id="chatbot-window" class="fixed bottom-24 right-6 md:right-8 w-80 max-w-full rounded-2xl shadow-2xl border border-gray-200"
+    style="backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%); background-color: rgba(255, 255, 255, 0.75); display: none;">
+    <div class="flex items-center justify-between px-4 py-3 bg-indigo-600 rounded-t-2xl">
+      <span class="text-white font-medium">Nova</span>
+      <button aria-label="Close chatbot" class="text-white cursor-default" disabled>&times;</button>
+    </div>
+    <div class="p-4 h-64 overflow-y-auto space-y-2 text-sm text-gray-700">
+      <div class="text-right">
+        <span class="inline-block bg-indigo-600 text-white rounded-lg px-3 py-1">
+          Hi, I am Nova, your friendly AI assistant here to help you navigate Echelon safely and confidently!
+        </span>
+      </div>
+    </div>
+    <form class="flex border-t border-gray-200" onsubmit="return false;">
+      <input type="text" placeholder="Ask me anything…" class="flex-grow px-3 py-2 rounded-bl-2xl focus:outline-none" disabled />
+      <button type="submit" class="px-4 font-semibold text-indigo-600" disabled>Send</button>
+    </form>
+  </div>
 
   <script>
-    // Tab switcher with active button highlighting
-    function showTab(tabId, button) {
-      const tabs = document.querySelectorAll('.tab-content');
-      tabs.forEach(tab => tab.classList.remove('active-tab'));
-      document.getElementById(tabId).classList.add('active-tab');
+    const toggleBtn = document.getElementById('chatbot-toggle');
+    const chatbotWindow = document.getElementById('chatbot-window');
 
-      const buttons = document.querySelectorAll('nav button');
-      buttons.forEach(btn => {
-        btn.setAttribute('aria-selected', 'false');
-        btn.classList.remove('active-tab-button');
-      });
-
-      button.setAttribute('aria-selected', 'true');
-      button.classList.add('active-tab-button');
-    }
-
-    // Image slider
-    let current = 0;
-    const slides = document.querySelectorAll('.slider img');
-
-    setInterval(() => {
-      slides[current].classList.remove('active');
-      current = (current + 1) % slides.length;
-      slides[current].classList.add('active');
-    }, 3000);
-
-    // URL validation
-    function isValidUrl(url) {
-      try {
-        new URL(url);
-        return true;
-      } catch (_) {
-        return false;
-      }
-    }
-
-    // Scan logic (mock)
-    function scanUrl(url) {
-      const suspiciousPatterns = ["free-money", "click-here", "login", "bit.ly", "win-big", "phish", "win money", "congratulations", "you won", "send details", "send money"];
-      let risk = "Safe";
-
-      for (let pattern of suspiciousPatterns) {
-        if (url.toLowerCase().includes(pattern)) {
-          risk = "Suspicious";
-          if (url.includes("login") || url.includes("bit.ly") || url.includes("send money") url.includes("free money")) {
-            risk = "Dangerous";
-          }
-          break;
-        }
-      }
-
-      return risk;
-    }
-
-    const scannedList = document.getElementById('scannedList');
-    const historyList = document.getElementById('historyList');
-    const quarantineList = document.getElementById('quarantineList');
-
-    document.getElementById('scanBtn').addEventListener('click', () => {
-      const input = document.getElementById('urlInput');
-      const url = input.value.trim();
-
-      if (!isValidUrl(url)) {
-        alert("Please enter a valid URL.");
-        return;
-      }
-
-      const result = scanUrl(url);
-      alert(`Scan Result: ${result}`);
-
-      const li = document.createElement('li');
-      li.innerHTML = `🔗 ${url} → <span class="result-${result.toLowerCase()}">${result}</span>`;
-      scannedList.appendChild(li);
-
-      const historyEntry = li.cloneNode(true);
-      historyList.appendChild(historyEntry);
-
-      if (result !== "Safe") {
-        const quarantineEntry = li.cloneNode(true);
-        quarantineList.appendChild(quarantineEntry);
-      }
-
-      input.value = "";
-    });
-
-    // Dark Mode toggle with persistence
-    const darkModeToggle = document.getElementById('darkModeToggle');
-
-    function setDarkMode(enabled) {
-      if (enabled) {
-        document.body.classList.add('dark-mode');
-        darkModeToggle.checked = true;
-        localStorage.setItem('darkMode', 'enabled');
+    toggleBtn.addEventListener('click', () => {
+      if (chatbotWindow.style.display === 'none' || chatbotWindow.style.display === '') {
+        chatbotWindow.style.display = 'block';
       } else {
-        document.body.classList.remove('dark-mode');
-        darkModeToggle.checked = false;
-        localStorage.setItem('darkMode', 'disabled');
+        chatbotWindow.style.display = 'none';
       }
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      const savedMode = localStorage.getItem('darkMode');
-      setDarkMode(savedMode === 'enabled');
-    });
-
-    darkModeToggle.addEventListener('change', (e) => {
-      setDarkMode(e.target.checked);
     });
   </script>
+
 </body>
 </html>
