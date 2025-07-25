@@ -11,6 +11,18 @@ if (!window.echelonScanner) {
     
   ];
 
+  // Add message listener for manual scans
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.type === 'PING') {
+      sendResponse({ status: 'ready' });
+    } else if (message.type === 'START_SCAN') {
+      if (window.echelonScanner) {
+        window.echelonScanner.startManualScan();
+      }
+      sendResponse({ status: 'scanning' });
+    }
+  });
+
   class EchelonScanner {
     constructor() {
       this.isScanning = false;
@@ -27,7 +39,9 @@ if (!window.echelonScanner) {
       scanner.id = 'echelon-scanner';
       scanner.innerHTML = `
         <div class="scanner-content">
-          <div class="scanner-icon"><img src="icons/icon.png" alt="Echelon" style="width: 24px; height: 24px;"></div>
+          <div class="scanner-icon">
+            <div class="icon-fallback">E</div>
+          </div>
           <div class="scanner-text">Echelon Scanning...</div>
           <div class="progress-bar">
             <div class="progress-fill"></div>
@@ -35,6 +49,31 @@ if (!window.echelonScanner) {
           <div class="scan-status">Initializing...</div>
         </div>
       `;
+      
+      // Try to load the icon immediately
+      const iconContainer = scanner.querySelector('.scanner-icon');
+      const iconImg = document.createElement('img');
+      iconImg.alt = 'Echelon';
+      iconImg.style.cssText = 'width: 32px; height: 32px; display: block; border-radius: 4px;';
+      
+      iconImg.onload = function() {
+        console.log('Icon loaded successfully');
+        iconContainer.querySelector('.icon-fallback').style.display = 'none';
+        iconContainer.appendChild(iconImg);
+      };
+      
+      iconImg.onerror = function() {
+        console.log('Icon failed to load from:', this.src);
+        console.log('Using fallback icon');
+      };
+      
+      // Set the source after setting up handlers
+      try {
+        iconImg.src = chrome.runtime.getURL('icons/icon.png');
+        console.log('Attempting to load icon from:', iconImg.src);
+      } catch (error) {
+        console.error('Error getting icon URL:', error);
+      }
       
       const style = document.createElement('style');
       style.textContent = `
@@ -74,6 +113,21 @@ if (!window.echelonScanner) {
           font-size: 24px;
           margin-bottom: 8px;
           animation: pulse 1.5s infinite;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .icon-fallback {
+          width: 32px;
+          height: 32px;
+          background: #fff;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: bold;
+          color: #0057b7;
+          font-size: 18px;
         }
         .scanner-text {
           font-weight: bold;
@@ -137,6 +191,18 @@ if (!window.echelonScanner) {
       setTimeout(() => this.hideScannerUI(), 3000);
     }
 
+    async startManualScan() {
+      if (this.isScanning) return;
+      
+      const results = this.scanPageForScams();
+      
+      // Send results immediately for manual scans
+      chrome.runtime.sendMessage({
+        type: 'SCAN_COMPLETE',
+        results: results
+      });
+    }
+
     scanPageForScams() {
       const bodyText = document.body.innerText.toLowerCase();
       const titleText = document.title.toLowerCase();
@@ -197,41 +263,131 @@ if (!window.echelonScanner) {
     showResults(results) {
       const scanner = document.getElementById('echelon-scanner');
       const statusText = scanner.querySelector('.scan-status');
-      const iconElement = scanner.querySelector('.scanner-icon');
       
       if (results.riskLevel === 'HIGH') {
         scanner.classList.add('high-risk');
-        iconElement.textContent = '';
         statusText.textContent = `HIGH RISK DETECTED! Found ${results.keywords.length} threats`;
-        
-        // Start countdown for high-risk pages
         this.startAutoCloseCountdown();
-        
       } else if (results.riskLevel === 'MEDIUM') {
         scanner.classList.add('medium-risk');
-        iconElement.textContent = '';
         statusText.textContent = `Medium risk - ${results.keywords.length} warnings`;
+        this.showMediumRiskDialog();
       } else if (results.riskLevel === 'LOW') {
-        iconElement.textContent = '';
         statusText.textContent = `Low risk detected`;
       } else {
-        iconElement.textContent = '';
         statusText.textContent = `Page is safe`;
       }
       
-      // Send results to popup
+      // Send results to popup and save to storage
       chrome.runtime.sendMessage({
         type: 'SCAN_COMPLETE',
         results: results
       });
       
-      if (results.riskLevel !== 'SAFE') {
-        const warning = `[Echelon Alert]  ${results.riskLevel} RISK detected!\n` +
-                       `Keywords found: ${results.keywords.join(", ")}\n` +
-                       `Suspicious links: ${results.suspiciousLinks.length}\n` +
-                       `Payment fields: ${results.formChecks.hasPaymentFields}`;
-        console.warn(warning);
-      }
+      chrome.storage.local.set({ lastScanResults: results });
+    }
+
+    showMediumRiskDialog() {
+      const overlay = document.createElement('div');
+      overlay.id = 'echelon-medium-risk';
+      overlay.innerHTML = `
+        <div class="medium-risk-content">
+          <div class="medium-risk-icon"></div>
+          <div class="medium-risk-title">MEDIUM RISK DETECTED</div>
+          <div class="medium-risk-message">This page contains potentially suspicious content. We recommend caution when interacting with this site.</div>
+          <div class="medium-risk-buttons">
+            <button class="medium-risk-close" onclick="this.parentElement.parentElement.parentElement.remove();">
+              Close Page
+            </button>
+            <button class="medium-risk-stay" onclick="this.parentElement.parentElement.parentElement.remove();">
+              Stay Anyway
+            </button>
+          </div>
+        </div>
+      `;
+
+      const style = document.createElement('style');
+      style.textContent = `
+        #echelon-medium-risk {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.8);
+          z-index: 999999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: Arial, sans-serif;
+        }
+        .medium-risk-content {
+          background: linear-gradient(135deg, #ff8800, #e67300);
+          color: white;
+          padding: 30px;
+          border-radius: 15px;
+          text-align: center;
+          box-shadow: 0 10px 50px rgba(255, 136, 0, 0.5);
+          max-width: 400px;
+        }
+        .medium-risk-icon {
+          font-size: 48px;
+          margin-bottom: 15px;
+        }
+        .medium-risk-title {
+          font-size: 24px;
+          font-weight: bold;
+          margin-bottom: 15px;
+          text-transform: uppercase;
+        }
+        .medium-risk-message {
+          font-size: 16px;
+          margin-bottom: 25px;
+          line-height: 1.4;
+        }
+        .medium-risk-buttons {
+          display: flex;
+          gap: 15px;
+          justify-content: center;
+        }
+        .medium-risk-close, .medium-risk-stay {
+          padding: 12px 20px;
+          border: none;
+          border-radius: 8px;
+          font-size: 14px;
+          font-weight: bold;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+        .medium-risk-close {
+          background: #ff4444;
+          color: white;
+        }
+        .medium-risk-close:hover {
+          background: #cc0000;
+        }
+        .medium-risk-stay {
+          background: rgba(255, 255, 255, 0.2);
+          color: white;
+          border: 2px solid white;
+        }
+        .medium-risk-stay:hover {
+          background: rgba(255, 255, 255, 0.3);
+        }
+      `;
+
+      document.head.appendChild(style);
+      document.body.appendChild(overlay);
+
+      // Add click handlers
+      overlay.querySelector('.medium-risk-close').onclick = () => {
+        overlay.remove();
+        this.closePage();
+      };
+      
+      overlay.querySelector('.medium-risk-stay').onclick = () => {
+        overlay.remove();
+      };
     }
 
     startAutoCloseCountdown() {
@@ -370,13 +526,13 @@ if (!window.echelonScanner) {
       // Show final warning
       alert('CLOSING DANGEROUS PAGE FOR YOUR PROTECTION ');
       
-      // Close the page
-      window.close();
-      
-      // If window.close() doesn't work (some browsers block it), redirect to safe page
-      setTimeout(() => {
+      // Try to close the page (works for popup windows)
+      if (window.opener) {
+        window.close();
+      } else {
+        // For regular tabs, redirect to a safe page
         window.location.href = 'about:blank';
-      }, 1000);
+      }
     }
 
     hideScannerUI() {
@@ -391,6 +547,8 @@ if (!window.echelonScanner) {
     delay(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
+
+    
   }
 
   // Make scanner globally accessible and start scan
