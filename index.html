@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Echelon - Cyber Safety Tool</title>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <style>
@@ -60,21 +60,28 @@
       background-color: #007bff;
     }
 
-    nav a {
+    nav button {
+      background: none;
+      border: none;
       color: white;
       padding: 14px 20px;
-      text-decoration: none;
       font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
       display: flex;
       align-items: center;
       transition: background-color 0.3s;
     }
 
-    nav a i {
+    nav button i {
       margin-right: 8px;
     }
 
-    nav a:hover {
+    nav button:hover {
+      background-color: #4b0082;
+    }
+
+    nav button.active-tab-button {
       background-color: #4b0082;
     }
 
@@ -148,23 +155,35 @@
   </header>
 
   <div class="search-bar">
-    <input type="text" id="urlInput" placeholder="Enter URL to scan...">
+    <input type="text" id="urlInput" placeholder="Enter URL to scan..." />
     <button id="scanBtn">Scan</button>
   </div>
 
-  <nav>
-    <a href="#" onclick="showTab('about')"><i class="fas fa-info-circle"></i> About</a>
-    <a href="#" onclick="showTab('sources')"><i class="fas fa-shield-alt"></i> Sources</a>
-    <a href="#" onclick="showTab('scanned')"><i class="fas fa-search"></i> Scanned</a>
-    <a href="#" onclick="showTab('history')"><i class="fas fa-history"></i> History</a>
-    <a href="#" onclick="showTab('report')"><i class="fas fa-flag"></i> Report</a>
-    <a href="#" onclick="showTab('settings')"><i class="fas fa-cog"></i> Settings</a>
+  <nav role="tablist" aria-label="Main navigation">
+    <button role="tab" aria-selected="true" class="active-tab-button" onclick="showTab('about', this)">
+      <i class="fas fa-info-circle"></i> About
+    </button>
+    <button role="tab" aria-selected="false" onclick="showTab('sources', this)">
+      <i class="fas fa-shield-alt"></i> Sources
+    </button>
+    <button role="tab" aria-selected="false" onclick="showTab('scanned', this)">
+      <i class="fas fa-search"></i> Scanned
+    </button>
+    <button role="tab" aria-selected="false" onclick="showTab('history', this)">
+      <i class="fas fa-history"></i> History
+    </button>
+    <button role="tab" aria-selected="false" onclick="showTab('report', this)">
+      <i class="fas fa-flag"></i> Report
+    </button>
+    <button role="tab" aria-selected="false" onclick="showTab('settings', this)">
+      <i class="fas fa-cog"></i> Settings
+    </button>
   </nav>
 
   <div class="slider">
-    <img src="cyber-attack-abstract-access.jpg" class="active" alt="Slide 1">
-    <img src="world-map-cyber-security-ivcowv89j1g1ff4m.jpg" alt="Slide 2">
-    <img src="hacker.jpg" alt="Slide 3">
+    <img src="cyber-attack-abstract-access.jpg" class="active" alt="Slide 1" />
+    <img src="world-map-cyber-security-ivcowv89j1g1ff4m.jpg" alt="Slide 2" />
+    <img src="hacker.jpg" alt="Slide 3" />
   </div>
 
   <section id="about" class="tab-content active-tab">
@@ -202,11 +221,21 @@
   </section>
 
   <script>
-    // Tab switcher
-    function showTab(tabId) {
+    // Tab switcher with active button highlighting
+    function showTab(tabId, button) {
       const tabs = document.querySelectorAll('.tab-content');
       tabs.forEach(tab => tab.classList.remove('active-tab'));
       document.getElementById(tabId).classList.add('active-tab');
+
+      // Update buttons aria-selected and styles
+      const buttons = document.querySelectorAll('nav button');
+      buttons.forEach(btn => {
+        btn.setAttribute('aria-selected', 'false');
+        btn.classList.remove('active-tab-button');
+      });
+
+      button.setAttribute('aria-selected', 'true');
+      button.classList.add('active-tab-button');
     }
 
     // Image slider
@@ -219,7 +248,7 @@
       slides[current].classList.add('active');
     }, 3000);
 
-    // Scan Logic
+    // URL validation
     function isValidUrl(url) {
       try {
         new URL(url);
@@ -229,6 +258,7 @@
       }
     }
 
+    // Scan logic (mock)
     function scanUrl(url) {
       const suspiciousPatterns = ["free-money", "click-here", "login", "bit.ly", "win-big", "phish"];
       let risk = "Safe";
@@ -267,6 +297,5 @@
       input.value = "";
     });
   </script>
-
 </body>
 </html>
