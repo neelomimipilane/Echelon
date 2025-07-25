@@ -144,6 +144,19 @@
       font-size: 18px;
       line-height: 1.6;
     }
+
+    #scan-log {
+      margin-top: 20px;
+      text-align: left;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #scan-log div {
+      padding: 8px;
+      border-bottom: 1px solid #ccc;
+    }
   </style>
 </head>
 <body>
@@ -162,7 +175,7 @@
   <nav>
     <a href="#" onclick="showTab('about')"><i class="fas fa-info-circle"></i> About</a>
     <a href="#" onclick="showTab('sources')"><i class="fas fa-shield-alt"></i> Sources</a>
-    <a href="#" onclick="showTab('scanned')"><i class="fas fa-search"></i> Scanned</a>
+    <a href="#" onclick="showTab('scanned'); loadScanned()"><i class="fas fa-search"></i> Scanned</a>
     <a href="#" onclick="showTab('history')"><i class="fas fa-history"></i> History</a>
     <a href="#" onclick="showTab('report')"><i class="fas fa-flag"></i> Report</a>
     <a href="#" onclick="showTab('settings')"><i class="fas fa-cog"></i> Settings</a>
@@ -190,7 +203,9 @@
 
   <section id="scanned" class="tab-content">
     <h2>Scanned Links</h2>
-    <p>View your scan history with indicators showing whether links were safe, suspicious, or dangerous.</p>
+    <div id="scan-log">
+      <!-- Dynamic scanned links will appear here -->
+    </div>
   </section>
 
   <section id="history" class="tab-content">
@@ -209,14 +224,14 @@
   </section>
 
   <script>
-    // Show selected tab
+    // Show tabs
     function showTab(tabId) {
       const tabs = document.querySelectorAll('.tab-content');
       tabs.forEach(tab => tab.classList.remove('active-tab'));
       document.getElementById(tabId).classList.add('active-tab');
     }
 
-    // Image Slider
+    // Image slider
     let current = 0;
     const slides = document.querySelectorAll('.slider img');
 
@@ -226,7 +241,7 @@
       slides[current].classList.add('active');
     }, 3000);
 
-    // URL Validator
+    // Validate URL
     function isValidUrl(url) {
       try {
         new URL(url);
@@ -236,7 +251,7 @@
       }
     }
 
-    // URL Scanner
+    // Scan logic
     function scanUrl(url) {
       const suspiciousPatterns = ["free-money", "click-here", "login-now", "phish", "win-big", "bit.ly"];
       let risk = "Safe";
@@ -254,25 +269,57 @@
       return risk;
     }
 
-    // Scan Button Logic
-    document.getElementById('scan-button').addEventListener('click', () => {
-      const urlInput = document.getElementById('scan-input').value.trim();
-      const resultDiv = document.getElementById('scan-result');
+    // Save to local storage
+    function saveToHistory(url, result) {
+      const history = JSON.parse(localStorage.getItem("scanHistory") || "[]");
+      history.unshift({ url, result, time: new Date().toLocaleString() });
+      localStorage.setItem("scanHistory", JSON.stringify(history));
+    }
 
-      if (!isValidUrl(urlInput)) {
-        resultDiv.innerHTML = `<span class="dangerous">❌ Invalid URL. Please try again.</span>`;
+    // Load scanned URLs to tab
+    function loadScanned() {
+      const scanLog = document.getElementById("scan-log");
+      scanLog.innerHTML = "";
+
+      const history = JSON.parse(localStorage.getItem("scanHistory") || "[]");
+
+      if (history.length === 0) {
+        scanLog.innerHTML = "<p>No scans yet.</p>";
         return;
       }
 
-      const result = scanUrl(urlInput);
+      history.forEach(entry => {
+        let className = "safe";
+        if (entry.result === "Suspicious") className = "suspicious";
+        if (entry.result === "Dangerous") className = "dangerous";
+
+        scanLog.innerHTML += `
+          <div><strong>${entry.url}</strong> – <span class="${className}">${entry.result}</span> <br><small>${entry.time}</small></div>
+        `;
+      });
+    }
+
+    // Scan button logic
+    document.getElementById("scan-button").addEventListener("click", () => {
+      const url = document.getElementById("scan-input").value.trim();
+      const resultDiv = document.getElementById("scan-result");
+
+      if (!isValidUrl(url)) {
+        resultDiv.innerHTML = `<span class="dangerous"> Invalid URL. Please try again.</span>`;
+        return;
+      }
+
+      const result = scanUrl(url);
 
       if (result === "Safe") {
         resultDiv.innerHTML = `<span class="safe"> Safe: No threats detected.</span>`;
       } else if (result === "Suspicious") {
-        resultDiv.innerHTML = `<span class="suspicious"> Suspicious: Be cautious with this link.</span>`;
+        resultDiv.innerHTML = `<span class="suspicious">  Suspicious: Be cautious with this link.</span>`;
       } else {
-        resultDiv.innerHTML = `<span class="dangerous"> Dangerous: Scam or phishing detected!</span>`;
+        resultDiv.innerHTML = `<span class="dangerous">  Dangerous: Scam or phishing detected!</span>`;
       }
+
+      saveToHistory(url, result);
     });
   </script>
 
