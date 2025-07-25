@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Echelon - Cyber Safety Tool</title>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f8ff;
+      color: #333;
+    }
+
+    header {
+      background-color: #4b0082;
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 36px;
+    }
+
+    header p {
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    .search-bar {
+      text-align: center;
+      margin: 20px;
+    }
+
+    .search-bar input {
+      width: 60%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    .search-bar button {
+      padding: 10px 20px;
+      margin-left: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      background-color: #007bff;
+    }
+
+    nav a {
+      color: white;
+      padding: 14px 20px;
+      text-decoration: none;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      transition: background-color 0.3s;
+    }
+
+    nav a i {
+      margin-right: 8px;
+    }
+
+    nav a:hover {
+      background-color: #4b0082;
+    }
+
+    .slider {
+      max-width: 800px;
+      margin: 30px auto;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .slider img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      display: none;
+    }
+
+    .slider img.active {
+      display: block;
+    }
+
+    section {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .active-tab {
+      display: block;
+      animation: fade 0.4s ease-in-out;
+    }
+
+    @keyframes fade {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    .tab-content h2 {
+      color: #4b0082;
+    }
+
+    .tab-content p {
+      max-width: 800px;
+      margin: auto;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Echelon</h1>
+    <p>Your smart browser extension for scam detection and digital awareness</p>
+  </header>
+
+  <div class="search-bar">
+    <input type="text" placeholder="Enter URL to scan...">
+    <button>Scan</button>
+  </div>
+
+  <nav>
+    <a href="#" onclick="showTab('about')"><i class="fas fa-info-circle"></i> About</a>
+    <a href="#" onclick="showTab('sources')"><i class="fas fa-shield-alt"></i> Sources</a>
+    <a href="#" onclick="showTab('scanned')"><i class="fas fa-search"></i> Scanned</a>
+    <a href="#" onclick="showTab('history')"><i class="fas fa-history"></i> History</a>
+    <a href="#" onclick="showTab('report')"><i class="fas fa-flag"></i> Report</a>
+    <a href="#" onclick="showTab('settings')"><i class="fas fa-cog"></i> Settings</a>
+  </nav>
+
+  <div class="slider">
+    <img src="cyber-attack-abstract-access.jpg" class="active" alt="Slide 1">
+    <img src="world-map-cyber-security-ivcowv89j1g1ff4m.jpg" alt="Slide 2">
+    <img src="hacker.jpg" alt="Slide 3">
+  </div>
+
+  <section id="about" class="tab-content active-tab">
+    <h2>About Echelon</h2>
+    <p>
+      Echelon is a cybersecurity browser extension built by youth, for youth.
+      It detects scams, phishing links, and fake information in real time.
+      Our goal is to protect internet users and build a digitally aware generation.
+    </p>
+  </section>
+
+  <section id="sources" class="tab-content">
+    <h2>Trusted Sources</h2>
+    <p>We cross-check information with verified platforms and databases to ensure you get credible, fraud-free content.</p>
+  </section>
+
+  <section id="scanned" class="tab-content">
+    <h2>Scanned Links</h2>
+    <p>View your scan history with indicators showing whether links were safe, suspicious, or dangerous.</p>
+  </section>
+
+  <section id="history" class="tab-content">
+    <h2>Scan History</h2>
+    <p>See a log of your previously scanned items, including those quarantined for safety.</p>
+  </section>
+
+  <section id="report" class="tab-content">
+    <h2>Report a Scam</h2>
+    <p>Submit any suspicious content you've encountered to help improve Echelon and protect others.</p>
+  </section>
+
+  <section id="settings" class="tab-content">
+    <h2>Settings</h2>
+    <p>Toggle dark mode, notifications, and other accessibility settings to personalize your experience.</p>
+  </section>
+
+  <script>
+    // Show selected tab
+    function showTab(tabId) {
+      const tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach(tab => tab.classList.remove('active-tab'));
+      document.getElementById(tabId).classList.add('active-tab');
+    }
+
+    // Image Slider
+    let current = 0;
+    const slides = document.querySelectorAll('.slider img');
+
+    setInterval(() => {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    }, 3000); // Change image every 3 seconds
+  </script>
+
+</body>
+</html>
