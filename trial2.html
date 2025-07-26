@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Echelon – Cyber-Safe Browsing</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f9fafb; color: #1f2937; }
+    .gradient-text {
+      background: linear-gradient(135deg, #6e40ff 0%, #2d9cdb 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .risk-high { background-color: #ef4444; color: white; }
+    .risk-medium { background-color: #f59e0b; color: white; }
+    .risk-low { background-color: #84cc16; color: white; }
+    .risk-safe { background-color: #10b981; color: white; }
+    .tab-btn[aria-selected="true"] {
+      background-color: #e0e7ff; box-shadow: 0 0 0 2px #c7d2fe; border-color: #a5b4fc;
+    }
+    .source-trustworthy { border-left: 4px solid #10b981; }
+    .source-questionable { border-left: 4px solid #f59e0b; }
+    .source-untrustworthy { border-left: 4px solid #ef4444; }
+  </style>
+</head>
+<body class="antialiased">
+  
+  <!-- Header -->
+  <header class="bg-white shadow-sm sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <a class="navbar-brand flex items-center gap-2" href="#">
+        <img src="icons/icon.png" alt="Echelon Logo" width="40" />
+        <span class="text-2xl font-bold text-indigo-600">Echelon</span>
+      </a>
+      <nav class="space-x-6 hidden md:block">
+        <a href="#features" class="text-gray-600 hover:text-indigo-600 font-medium">Features</a>
+        <a href="#how-it-works" class="text-gray-600 hover:text-indigo-600 font-medium">How It Works</a>
+        <a href="#extension" class="text-gray-600 hover:text-indigo-600 font-medium">Get Extension</a>
+      </nav>
+      <button class="md:hidden text-gray-600">
+        <i class="fas fa-bars text-xl"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-br from-indigo-50 to-blue-50 py-20">
+    <div class="max-w-5xl mx-auto px-6 text-center">
+      <div class="inline-block bg-white/50 backdrop-blur-sm rounded-xl px-4 py-2 mb-6 border border-indigo-100">
+        <span class="font-bold tracking-widest text-xs uppercase text-indigo-600">Cyber Protection</span>
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-6">
+        Browse <span class="gradient-text">Without Fear</span>
+      </h1>
+      <p class="text-lg text-gray-700 max-w-2xl mx-auto">
+        Echelon shields you from scams, fake news, and malicious content while highlighting trustworthy information.
+      </p>
+      <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#extension" class="inline-flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-medium shadow hover:shadow-md transition">
+          <i class="fas fa-shield-alt mr-2"></i> Get Protection
+        </a>
+        <a href="#scanner" class="inline-flex items-center justify-center bg-white text-indigo-600 border border-indigo-200 hover:border-indigo-300 px-6 py-3 rounded-xl font-medium shadow-sm hover:shadow transition">
+          <i class="fas fa-search mr-2"></i> Try Scanner
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scanner Section -->
+  <section id="scanner" class="py-16 bg-white">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="bg-indigo-50 rounded-2xl p-8 shadow-sm border border-indigo-100">
+        <h2 class="text-2xl font-bold text-indigo-800 mb-6 text-center">
+          <i class="fas fa-search mr-2"></i> Website Safety Scanner
+        </h2>
+        
+        <!-- URL Input -->
+        <div class="flex flex-col sm:flex-row gap-2 mb-6">
+          <input
+            type="text"
+            id="urlInput"
+            placeholder="Enter URL to scan"
+            class="flex-grow px-4 py-3 rounded-lg border border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            aria-label="URL to scan"
+          />
+          <button
+            id="scanBtn"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold transition-all shadow-md flex items-center justify-center"
+          >
+            <i class="fas fa-search mr-2"></i> Scan Now
+          </button>
+        </div>
+        
+        <!-- Tabs Navigation -->
+        <nav role="tablist" aria-label="Scan results" class="flex flex-wrap gap-2 mb-6">
+          <button role="tab" aria-selected="true" data-tab="scanned" class="tab-btn px-4 py-2 rounded-lg font-medium">
+            <i class="fas fa-file-alt mr-1"></i> Results
+          </button>
+          <button role="tab" aria-selected="false" data-tab="history" class="tab-btn px-4 py-2 rounded-lg font-medium">
+            <i class="fas fa-history mr-1"></i> History
+          </button>
+          <button role="tab" aria-selected="false" data-tab="sources" class="tab-btn px-4 py-2 rounded-lg font-medium">
+            <i class="fas fa-shield-alt mr-1"></i> Sources
+          </button>
+          <button role="tab" aria-selected="false" data-tab="report" class="tab-btn px-4 py-2 rounded-lg font-medium">
+            <i class="fas fa-flag mr-1"></i> Report
+          </button>
+        </nav>
+        
+        <!-- Tabs Content -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          <!-- Scanned Tab -->
+          <section id="scanned" class="tab-content p-6">
+            <h3 class="text-xl font-semibold text-indigo-800 mb-4">Scan Results</h3>
+            <div id="scannedContent" class="text-gray-700 space-y-3">
+              <div class="flex items-center justify-center py-8 text-gray-400">
+                <i class="fas fa-search mr-2"></i> No scan performed yet
+              </div>
+            </div>
+          </section>
+          
+          <!-- History Tab -->
+          <section id="history" class="tab-content p-6 hidden">
+            <h3 class="text-xl font-semibold text-indigo-800 mb-4">Scan History</h3>
+            <div class="overflow-x-auto">
+              <table class="min-w-full border border-gray-200 rounded-lg">
+                <thead class="bg-gray-50 text-gray-700">
+                  <tr>
+                    <th class="px-4 py-2 border-b border-gray-200 text-left">URL</th>
+                    <th class="px-4 py-2 border-b border-gray-200 text-left">Date</th>
+                    <th class="px-4 py-2 border-b border-gray-200 text-left">Risk</th>
+                  </tr>
+                </thead>
+                <tbody id="historyTableBody" class="divide-y divide-gray-200">
+                  <tr>
+                    <td colspan="3" class="px-4 py-6 text-center text-gray-500">
+                      No scan history available
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+          
+          <!-- Sources Tab -->
+          <section id="sources" class="tab-content p-6 hidden">
+            <h3 class="text-xl font-semibold text-indigo-800 mb-4">Sources Analysis</h3>
+            <div id="sourcesList" class="text-gray-700 space-y-4">
+              <div class="flex items-center justify-center py-8 text-gray-400">
+                <i class="fas fa-search mr-2"></i> No sources analyzed yet
+              </div>
+            </div>
+          </section>
+          
+          <!-- Report Tab -->
+          <section id="report" class="tab-content p-6 hidden">
+            <h3 class="text-xl font-semibold text-indigo-800 mb-4">Report Suspicious Content</h3>
+            <form id="reportForm" class="space-y-4">
+              <div>
+                <label for="reportUrl" class="block text-sm font-medium text-gray-700 mb-1">Website URL</label>
+                <input type="url" id="reportUrl" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+              </div>
+              <div>
+                <label for="reportDesc" class="block text-sm font-medium text-gray-700 mb-1">What's suspicious?</label>
+                <textarea id="reportDesc" rows="4" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+              </div>
+              <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition">
+                Submit Report
+              </button>
+              <div id="reportStatus" class="hidden p-2 text-green-600 text-sm"></div>
+            </form>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="py-20 bg-indigo-50">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">
+          Powerful <span class="gradient-text">Protection</span> Features
+        </h2>
+        <p class="text-lg text-gray-700 max-w-2xl mx-auto">
+          Echelon combines advanced technology with user-friendly tools to keep you safe online
+        </p>
+      </div>
+      
+      <div class="grid gap-8 md:grid-cols-3">
+        <!-- Feature 1 -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:border-indigo-300 transition">
+          <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mb-4 text-indigo-600">
+            <i class="fas fa-bolt text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Real-Time Scanning</h3>
+          <p class="text-gray-700">Instantly analyzes every page you visit for scams, phishing, and malicious content with our advanced detection algorithms.</p>
+        </div>
+        
+        <!-- Feature 2 -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:border-indigo-300 transition">
+          <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mb-4 text-indigo-600">
+            <i class="fas fa-database text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Threat Intelligence</h3>
+          <p class="text-gray-700">Access to constantly updated database of known scams, malicious sites, and emerging threats from our global network.</p>
+        </div>
+        
+        <!-- Feature 3 -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:border-indigo-300 transition">
+          <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mb-4 text-indigo-600">
+            <i class="fas fa-user-shield text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Privacy Protection</h3>
+          <p class="text-gray-700">Identifies and blocks tracking attempts, fingerprinting, and data collection from suspicious sources while you browse.</p>
+        </div>
+        
+        <!-- Feature 4 -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:border-indigo-300 transition">
+          <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mb-4 text-indigo-600">
+            <i class="fas fa-check-circle text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Verified Sources</h3>
+          <p class="text-gray-700">Highlights content from trusted, authoritative sources and warns about unverified or questionable information.</p>
+        </div>
+        
+        <!-- Feature 5 -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:border-indigo-300 transition">
+          <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mb-4 text-indigo-600">
+            <i class="fas fa-cog text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Custom Protection</h3>
+          <p class="text-gray-700">Adjust protection levels and notifications to match your browsing habits and security preferences.</p>
+        </div>
+        
+        <!-- Feature 6 -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:border-indigo-300 transition">
+          <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mb-4 text-indigo-600">
+            <i class="fas fa-robot text-xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">AI Analysis</h3>
+          <p class="text-gray-700">Our AI examines page content, links, and sources to detect sophisticated threats that traditional methods might miss.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section id="how-it-works" class="py-20 bg-white">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">
+          How Echelon <span class="gradient-text">Protects You</span>
+        </h2>
+        <p class="text-lg text-gray-700 max-w-2xl mx-auto">
+          Our multi-layered security approach works seamlessly as you browse
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Step 1 -->
+        <div class="text-center">
+          <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4 text-indigo-600 font-bold text-xl">
+            1
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Install</h3>
+          <p class="text-gray-700">Add the Echelon extension to your browser in seconds. Works on Chrome, Firefox, and Edge.</p>
+        </div>
+        
+        <!-- Step 2 -->
+        <div class="text-center">
+          <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4 text-indigo-600 font-bold text-xl">
+            2
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Browse</h3>
+          <p class="text-gray-700">Echelon works automatically in the background, analyzing every page you visit in real-time.</p>
+        </div>
+        
+        <!-- Step 3 -->
+        <div class="text-center">
+          <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4 text-indigo-600 font-bold text-xl">
+            3
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Stay Protected</h3>
+          <p class="text-gray-700">Get instant warnings about dangerous sites, suspicious links, and untrustworthy content.</p>
+        </div>
+      </div>
+
+      <div class="mt-16 bg-indigo-50 rounded-2xl p-8">
+        <h3 class="text-2xl font-bold text-indigo-800 mb-4">Advanced Protection Layers</h3>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="bg-white p-4 rounded-lg shadow-sm">
+            <h4 class="font-semibold text-indigo-700 mb-2"><i class="fas fa-shield-alt mr-2"></i> URL Analysis</h4>
+            <p class="text-gray-700">Checks against known malicious domains and phishing patterns in our constantly updated database.</p>
+          </div>
+          <div class="bg-white p-4 rounded-lg shadow-sm">
+            <h4 class="font-semibold text-indigo-700 mb-2"><i class="fas fa-code mr-2"></i> Content Inspection</h4>
+            <p class="text-gray-700">Analyzes page content for scam patterns, fake news markers, and suspicious elements.</p>
+          </div>
+          <div class="bg-white p-4 rounded-lg shadow-sm">
+            <h4 class="font-semibold text-indigo-700 mb-2"><i class="fas fa-link mr-2"></i> Link Evaluation</h4>
+            <p class="text-gray-700">Examines all outbound links for potential redirects to dangerous destinations.</p>
+          </div>
+          <div class="bg-white p-4 rounded-lg shadow-sm">
+            <h4 class="font-semibold text-indigo-700 mb-2"><i class="fas fa-certificate mr-2"></i> Certificate Check</h4>
+            <p class="text-gray-700">Verifies SSL certificates and encryption standards to prevent man-in-the-middle attacks.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Extension CTA Section -->
+  <section id="extension" class="py-20 bg-gradient-to-br from-indigo-600 to-blue-600 text-white">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">
+        Ready to Browse With Confidence?
+      </h2>
+      <p class="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
+        Install Echelon now and get real-time protection across all your devices.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#" class="bg-white hover:bg-gray-100 text-indigo-600 px-8 py-4 rounded-lg font-bold text-lg shadow-lg transition flex items-center justify-center">
+          <i class="fab fa-chrome mr-2 text-xl"></i> Add to Chrome
+        </a>
+        <a href="#" class="bg-white hover:bg-gray-100 text-indigo-600 px-8 py-4 rounded-lg font-bold text-lg shadow-lg transition flex items-center justify-center">
+          <i class="fab fa-firefox mr-2 text-xl"></i> Add to Firefox
+        </a>
+        <a href="#" class="bg-indigo-800 hover:bg-indigo-900 text-white px-8 py-4 rounded-lg font-bold text-lg shadow-lg transition flex items-center justify-center">
+          <i class="fab fa-edge mr-2 text-xl"></i> Add to Edge
+        </a>
+      </div>
+      
+      <div class="mt-8 flex flex-wrap justify-center gap-4">
+        <div class="flex items-center bg-white/10 px-4 py-2 rounded-full">
+          <i class="fas fa-check-circle mr-2"></i> Free to use
+        </div>
+        <div class="flex items-center bg-white/10 px-4 py-2 rounded-full">
+          <i class="fas fa-shield-alt mr-2"></i> No data collection
+        </div>
+        <div class="flex items-center bg-white/10 px-4 py-2 rounded-full">
+          <i class="fas fa-lock mr-2"></i> Privacy focused
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-50 py-12">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <div class="flex items-center mb-4">
+            <img src="icons/icon.png" class="w-10 h-10 mr-2" alt="">
+            <span class="text-xl font-bold text-indigo-600">Echelon</span>
+          </div>
+          <p class="text-gray-600 mb-4">Making the web safer for everyone.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-500 hover:text-indigo-600"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-gray-500 hover:text-indigo-600"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="font-bold text-gray-900 mb-4">Product</h3>
+          <ul class="space-y-2">
+            <li><a href="#features" class="text-gray-600 hover:text-indigo-600">Features</a></li>
+            <li><a href="#how-it-works" class="text-gray-600 hover:text-indigo-600">How It Works</a></li>
+            <li><a href="#extension" class="text-gray-600 hover:text-indigo-600">Get Extension</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="font-bold text-gray-900 mb-4">Resources</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-600 hover:text-indigo-600">Documentation</a></li>
+            <li><a href="#" class="text-gray-600 hover:text-indigo-600">Support</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="font-bold text-gray-900 mb-4">Company</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-600 hover:text-indigo-600">About</a></li>
+            <li><a href="#" class="text-gray-600 hover:text-indigo-600">Privacy</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-200 pt-8 text-center text-gray-500 text-sm">
+        © 2023 Echelon Security. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+<script>
+// Enhanced Scanner Matching Extension Behavior
+(() => {
+  // Initialize with extension-like scan history
+  let scanHistory = JSON.parse(localStorage.getItem('echelonScanHistory')) || [];
+  let currentScan = null;
+
+  // Load history on page load
+  window.addEventListener('DOMContentLoaded', () => {
+    if(scanHistory.length > 0) {
+      currentScan = scanHistory[0];
+      displayHistory();
+    }
+  });
+
+  // Tab management
+  const tabs = document.querySelectorAll('[role="tab"]');
+  const contents = document.querySelectorAll('.tab-content');
+
+  function activateTab(tabName) {
+    tabs.forEach(b => {
+      const selected = b.getAttribute('data-tab') === tabName;
+      b.setAttribute('aria-selected', selected);
+      if(selected) {
+        b.classList.add('bg-indigo-100', 'shadow-sm', 'border', 'border-indigo-300');
+        b.classList.remove('hover:bg-indigo-100');
+      } else {
+        b.classList.remove('bg-indigo-100', 'shadow-sm', 'border', 'border-indigo-300');
+        b.classList.add('hover:bg-indigo-100');
+      }
+    });
+    contents.forEach(c => c.classList.toggle('hidden', c.id !== tabName));
+    
+    // Load content when tab is activated
+    if(tabName === 'history') displayHistory();
+    if(tabName === 'sources' && currentScan) analyzeSources(currentScan.url);
+  }
+
+  tabs.forEach(btn => btn.addEventListener('click', () => activateTab(btn.getAttribute('data-tab'))));
+  activateTab('scanned');
+
+  // Extension-like scanning function
+  document.getElementById('scanBtn').addEventListener('click', async () => {
+    const urlInput = document.getElementById('urlInput').value.trim();
+    if(!urlInput) return;
+    
+    try {
+      // Normalize URL like extension would
+      let url = urlInput.startsWith('http') ? urlInput : `https://${urlInput}`;
+      url = new URL(url).href;
+      
+      // Show scanning state
+      const scanBtn = document.getElementById('scanBtn');
+      scanBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Scanning...';
+      scanBtn.disabled = true;
+      
+      // Simulate extension's scanning process
+      const scanResult = await extensionScan(url);
+      
+      // Update UI
+      currentScan = scanResult;
+      scanHistory.unshift(scanResult);
+      if(scanHistory.length > 50) scanHistory.pop();
+      localStorage.setItem('echelonScanHistory', JSON.stringify(scanHistory));
+      
+      displayScanResult(scanResult);
+      displayHistory();
+      
+      // Show appropriate warning based on risk level
+      if(scanResult.riskLevel === 'HIGH') {
+        document.getElementById('scannedContent').insertAdjacentHTML('afterbegin', 
+          `<div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <i class="fas fa-exclamation-triangle text-red-500"></i>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-red-700">
+                  <strong>High Risk Warning:</strong> This site appears dangerous. We recommend you leave immediately.
+                </p>
+              </div>
+            </div>
+          </div>`
+        );
+      } else if(scanResult.riskLevel === 'MEDIUM') {
+        document.getElementById('scannedContent').insertAdjacentHTML('afterbegin',
+          `<div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <i class="fas fa-exclamation-circle text-yellow-500"></i>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-yellow-700">
+                  <strong>Caution Advised:</strong> This site has some suspicious elements.
+                </p>
+              </div>
+            </div>
+          </div>`
+        );
+      }
+      
+    } finally {
+      const scanBtn = document.getElementById('scanBtn');
+      scanBtn.innerHTML = '<i class="fas fa-search mr-2"></i> Scan Now';
+      scanBtn.disabled = false;
+    }
+  });
+
+  // Simulate actual extension scanning logic
+  async function extensionScan(url) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const domain = new URL(url).hostname;
+        const riskLevel = extensionCalculateRisk(domain);
+        
+        resolve({
+          url,
+          riskLevel,
+          timestamp: new Date().toISOString(),
+          securityChecks: extensionSecurityChecks(domain),
+          sources: extensionAnalyzeSources(domain)
+        });
+      }, 1000); // Simulate extension's processing time
+    });
+  }
+
+  // Extension's actual risk calculation logic
+  function extensionCalculateRisk(domain) {
+    // These would match your extension's database
+    const highRiskDomains = [
+      'scam-site.com', 
+      'phishing-example.net',
+      'malware-download.xyz'
+    ];
+    const safeDomains = [
+      'google.com', 
+      'microsoft.com', 
+      'wikipedia.org',
+      'facebook.com',
+      'youtube.com'
+    ];
+    
+    if(highRiskDomains.includes(domain)) return 'HIGH';
+    if(safeDomains.includes(domain)) return 'SAFE';
+    
+    // Simulate extension's AI analysis
+    if(domain.endsWith('.xyz')) return 'MEDIUM';
+    if(domain.includes('adservice')) return 'LOW';
+    if(domain.includes('track')) return 'MEDIUM';
+    
+    return Math.random() > 0.6 ? 'LOW' : 'MEDIUM';
+  }
+
+  // Extension's security checks
+  function extensionSecurityChecks(domain) {
+    const isTrusted = [
+      'google.com', 
+      'facebook.com', 
+      'microsoft.com',
+      'wikipedia.org'
+    ].includes(domain);
+    
+    return {
+      sslValid: true, // Extension would verify this
+      hasTrackers: domain.includes('track') || Math.random() > 0.7,
+      hasAds: domain.includes('ad') || Math.random() > 0.6,
+      reputationScore: isTrusted ? 85 + Math.floor(Math.random() * 15) : 
+                     domain.includes('ad') ? 40 + Math.floor(Math.random() * 30) :
+                     60 + Math.floor(Math.random() * 30),
+      lastUpdated: new Date().toISOString().split('T')[0]
+    };
+  }
+
+  // Extension's source analysis
+  function extensionAnalyzeSources(domain) {
+    const commonSources = {
+      'google.com': [
+        { 
+          domain: 'google-analytics.com',
+          type: 'Analytics', 
+          trust: 'Trustworthy', 
+          desc: 'Google Analytics service for website metrics',
+          impact: 'Low'
+        },
+        { 
+          domain: 'doubleclick.net',
+          type: 'Advertising', 
+          trust: 'Questionable', 
+          desc: 'Google advertising network',
+          impact: 'Medium'
+        }
+      ],
+      'facebook.com': [
+        { 
+          domain: 'facebook.net',
+          type: 'Social', 
+          trust: 'Trustworthy', 
+          desc: 'Facebook social widgets and integrations',
+          impact: 'Low'
+        },
+        { 
+          domain: 'fbcdn.net',
+          type: 'Content Delivery', 
+          trust: 'Trustworthy', 
+          desc: 'Facebook content delivery network',
+          impact: 'Low'
+        }
+      ]
+    };
+    
+    if(commonSources[domain]) return commonSources[domain];
+    
+    // Default analysis for unknown domains
+    return [
+      {
+        domain: domain,
+        type: ['CDN','Tracker','Analytics'][Math.floor(Math.random()*3)],
+        trust: ['Trustworthy','Questionable'][Math.floor(Math.random()*2)],
+        desc: 'Third-party resource loaded by the page',
+        impact: ['Low','Medium'][Math.floor(Math.random()*2)]
+      },
+      {
+        domain: `ads.${domain.split('.').slice(-2).join('.')}`,
+        type: 'Advertising',
+        trust: 'Questionable',
+        desc: 'Advertising network serving ads on this page',
+        impact: 'Medium'
+      }
+    ];
+  }
+
+  // Enhanced source analysis display
+  async function analyzeSources(url) {
+    const sourcesList = document.getElementById('sourcesList');
+    sourcesList.innerHTML = `
+      <div class="flex items-center justify-center py-8 text-gray-400">
+        <i class="fas fa-spinner fa-spin mr-2"></i> Analyzing page sources...
+      </div>`;
+    
+    setTimeout(() => {
+      const sources = currentScan?.sources || extensionAnalyzeSources(new URL(url).hostname);
+      
+      sourcesList.innerHTML = `
+        <div class="space-y-4">
+          <div class="p-4 bg-gray-50 rounded-lg">
+            <h4 class="font-medium mb-2">Page Resources Analysis</h4>
+            <p class="text-sm">Found ${sources.length} external resources with varying privacy impact</p>
+          </div>
+          
+          ${sources.map(source => `
+            <div class="p-4 border rounded-lg ${getSourceTrustClass(source.trust)}">
+              <div class="flex justify-between items-start">
+                <div class="flex-1 min-w-0">
+                  <h4 class="font-medium truncate">${source.domain}</h4>
+                  <p class="text-sm text-gray-600">${source.type} • Impact: ${source.impact}</p>
+                </div>
+                <span class="px-2 py-1 rounded-full text-xs ${getRiskClass(source.trust)} ml-2">
+                  ${source.trust}
+                </span>
+              </div>
+              <p class="mt-2 text-sm">${source.desc}</p>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }, 1200);
+  }
+
+  function getSourceTrustClass(trustLevel) {
+    switch(trustLevel) {
+      case 'Trustworthy': return 'source-trustworthy';
+      case 'Questionable': return 'source-questionable';
+      case 'Untrustworthy': return 'source-untrustworthy';
+      default: return '';
+    }
+  }
+
+  function getRiskClass(trustLevel) {
+    switch(trustLevel) {
+      case 'Trustworthy': return 'risk-safe';
+      case 'Questionable': return 'risk-medium';
+      case 'Untrustworthy': return 'risk-high';
+      default: return '';
+    }
+  }
+
+  function displayScanResult(scan) {
+    const container = document.getElementById('scannedContent');
+    const checks = scan.securityChecks;
+    
+    container.innerHTML = `
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="font-medium">Scanned URL:</span>
+          <a href="${scan.url}" target="_blank" rel="noopener" class="text-indigo-600 hover:underline truncate max-w-xs">${scan.url}</a>
+        </div>
+        
+        <div class="flex items-center justify-between">
+          <span class="font-medium">Safety Rating:</span>
+          <span class="px-3 py-1 rounded-full text-sm font-medium risk-${scan.riskLevel.toLowerCase()}">
+            ${scan.riskLevel} RISK
+          </span>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          <div class="bg-gray-50 p-3 rounded-lg">
+            <p class="text-sm font-medium">SSL Certificate</p>
+            <p class="text-green-600">
+              Valid <i class="fas fa-check-circle ml-1"></i>
+            </p>
+          </div>
+          <div class="bg-gray-50 p-3 rounded-lg">
+            <p class="text-sm font-medium">Trackers</p>
+            <p class="${!checks.hasTrackers ? 'text-green-600' : 'text-yellow-600'}">
+              ${!checks.hasTrackers ? 'None found' : checks.hasTrackers + ' detected'}
+            </p>
+          </div>
+          <div class="bg-gray-50 p-3 rounded-lg">
+            <p class="text-sm font-medium">Advertising</p>
+            <p class="${!checks.hasAds ? 'text-green-600' : 'text-yellow-600'}">
+              ${!checks.hasAds ? 'None found' : 'Ad networks detected'}
+            </p>
+          </div>
+          <div class="bg-gray-50 p-3 rounded-lg">
+            <p class="text-sm font-medium">Reputation Score</p>
+            <p class="${checks.reputationScore > 70 ? 'text-green-600' : checks.reputationScore > 40 ? 'text-yellow-600' : 'text-red-600'}">
+              ${checks.reputationScore}/100
+            </p>
+          </div>
+        </div>
+        
+        <div class="text-sm text-gray-500 mt-4">
+          Last scanned: ${checks.lastUpdated || new Date().toISOString().split('T')[0]}
+        </div>
+      </div>
+    `;
+  }
+
+  function displayHistory() {
+    const tbody = document.getElementById('historyTableBody');
+    
+    if(scanHistory.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="3" class="px-4 py-6 text-center text-gray-500">
+            <i class="far fa-clock mr-2"></i> No scan history yet
+          </td>
+        </tr>`;
+      return;
+    }
+    
+    tbody.innerHTML = scanHistory.map(scan => `
+      <tr class="hover:bg-gray-50">
+        <td class="px-4 py-3 border-b border-gray-200">
+          <a href="${scan.url}" target="_blank" rel="noopener" class="text-indigo-600 hover:underline truncate max-w-xs block">
+            ${new URL(scan.url).hostname}
+          </a>
+        </td>
+        <td class="px-4 py-3 border-b border-gray-200 text-sm">
+          ${new Date(scan.timestamp).toLocaleDateString()}
+        </td>
+        <td class="px-4 py-3 border-b border-gray-200">
+          <span class="px-2 py-1 rounded-full text-xs font-medium risk-${scan.riskLevel.toLowerCase()}">
+            ${scan.riskLevel}
+          </span>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  // Report form handling
+  document.getElementById('reportForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const url = document.getElementById('reportUrl').value.trim();
+    const desc = document.getElementById('reportDesc').value.trim();
+    
+    if(!url || !desc) return;
+    
+    // In a real app, this would send to your backend
+    const statusDiv = document.getElementById('reportStatus');
+    statusDiv.innerHTML = `
+      <div class="bg-green-50 border-l-4 border-green-500 p-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <i class="fas fa-check-circle text-green-500"></i>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm text-green-700">
+              Report submitted successfully. Our team will review this site.
+            </p>
+          </div>
+        </div>
+      </div>
+    `;
+    statusDiv.classList.remove('hidden');
+    this.reset();
+    
+    setTimeout(() => statusDiv.classList.add('hidden'), 5000);
+  });
+
+  // Load initial history
+  displayHistory();
+})();
+</script>
